@@ -23,7 +23,6 @@ public class CustomerService {
 		}
 		
 		boolean login = SecurePasswordHasher.verifyPassword(rawPassword, customer.getPassword());
-		
 		if(!login) { 
 			// this case the gui would throw an error saying incorrect password
 			System.err.print("Password is incorrect");
@@ -33,7 +32,7 @@ public class CustomerService {
 	}
 	
 	public void Register(String email, String rawPassword, String username) {
-		
+		customerDAO.insertRecord(username, email, rawPassword);
 	}
 	
 }

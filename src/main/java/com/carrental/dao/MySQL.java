@@ -60,12 +60,15 @@ public class MySQL {
 	 * Insert function to create a record of data for the MySQL server
 	 * @param insertStmt the string statement of which the MySQL server will execute
 	 */
-	public static void insert(String insertStmt) {
+	public static boolean insert(String insertStmt) {
+		boolean success = false;
 		try {
 			Statement statement = connection.createStatement();
-			statement.executeUpdate(insertStmt);
+			int rowsaffected = statement.executeUpdate(insertStmt);
+			success = rowsaffected > 0;
 		} catch (SQLException e) {
 			System.err.print("Failed to create insert statement");
 		}
+		return success;
 	}
 }

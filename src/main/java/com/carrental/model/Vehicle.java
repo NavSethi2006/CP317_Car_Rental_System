@@ -1,6 +1,7 @@
 package main.java.com.carrental.model;
 
-public abstract class Vehicle {
+
+public class Vehicle {
 	private String id;
 	private String licensePlate;
 	private String make;
@@ -10,19 +11,22 @@ public abstract class Vehicle {
 	private VehicleStatus status;
 	private VehicleType type;
 	
-	public enum VehicleStatus {AVAILABLE, RENTED, MAINTAINANCE};
-	public enum VehicleType {ECONOMY, COMPACT, SUV, LUXURY, TRUCK};
 	
-	public Vehicle(String id, String licensePlate, String make, String model, int year, double dailyRate) {
+	public Vehicle() {
+		
+	}
+	
+	public Vehicle(String id, String licensePlate, String make, String model, int year, double dailyRate, VehicleType type) {
 		this.id = id;
 		this.licensePlate = licensePlate;
 		this.make = make;
 		this.model = model;
 		this.year = year;
 		this.dailyRate = dailyRate;
+		this.type = type;
 		status = VehicleStatus.AVAILABLE;
 	}
-	
+		
 	public String getId() {
 		return id;
 	}
