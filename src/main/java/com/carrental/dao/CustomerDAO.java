@@ -30,7 +30,7 @@ public class CustomerDAO {
 		return customer;
 	}
 	
-	public Customer findByEmail(String email) {
+	public static Customer findByEmail(String email) {
 		String query = "SELECT * FROM customers WHERE email = '"+email+"'";
 		ResultSet result = MySQL.fetch(query);
 		Customer customer = null;
@@ -49,7 +49,7 @@ public class CustomerDAO {
 	
 
 	
-	public void insertRecord(String username, String email, String password) {
+	public static void insertRecord(String username, String email, String password) {
 		String query = "INSERT INTO customers(name, email) VALUES('"+username+"','"+email+"'"+password+"');";
 		boolean insertion = MySQL.insert(query);
 		
