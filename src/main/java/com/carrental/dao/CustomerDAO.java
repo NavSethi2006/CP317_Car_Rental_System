@@ -1,6 +1,4 @@
 package main.java.com.carrental.dao;
-
-import java.security.SecureRandom;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -12,8 +10,6 @@ public class CustomerDAO {
 		
 	}
 	
-	
-
 	public static Customer findByUsername(String username) {
 		String query = "SELECT * FROM customers WHERE name = '"+username+"'";
 		ResultSet result = MySQL.fetch(query);
@@ -24,12 +20,9 @@ public class CustomerDAO {
 			String email = result.getString(2);
 			String password = result.getString(3);
 			customer = new Customer(id, name, email,password);
-
 		} catch(SQLException e) {
 			System.err.print("This email doesent exist in our database, would you like to register?");
 		}
-		
-		
 		return customer;
 	}
 	
@@ -48,10 +41,7 @@ public class CustomerDAO {
 		} catch(SQLException e) {
 			System.err.print("This email doesent exist in our database, would you like to register?");
 		}
-		
-		
 		return customer;
-		
 	}
 	
 	public static Customer findByEmail(String email) {
@@ -65,22 +55,14 @@ public class CustomerDAO {
 			String password = result.getString(3);
 			
 			customer = new Customer(id, name, email, password);
-
 		} catch(SQLException e) {
 			System.err.print("This email doesent exist in our database, would you like to register?");
 		}
-		
-		
 		return customer;
-		
 	}
-	
-
 	
 	public static void insertRecord(String username, String email, String password) {
 		String query = "INSERT INTO customers(name, email) VALUES('"+username+"','"+email+"'"+password+"');";
 		MySQL.insert(query);
 	}
-	
-	
 }

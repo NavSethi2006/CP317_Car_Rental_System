@@ -10,7 +10,9 @@ public class Vehicle {
 	private double dailyRate;
 	private VehicleStatus status;
 	private VehicleType type;
-	
+
+	public enum VehicleType {SEDAN, SUV, TRUCK, CAR};
+	public enum VehicleStatus {AVAILABLE, RENTED, MAINTAINANCE};
 	
 	public Vehicle() {
 		
@@ -26,6 +28,22 @@ public class Vehicle {
 		this.type = type;
 		status = VehicleStatus.AVAILABLE;
 	}
+	
+	public VehicleType getTypeFromString(String typeS) {
+		switch(typeS) {
+		case "SEDAN":
+			type = VehicleType.SEDAN;
+		case "SUV":
+			type =  VehicleType.SUV;
+		case "TRUCK":
+			type = VehicleType.TRUCK;
+		case "CAR":
+			type = VehicleType.CAR;
+		}
+		
+		return type;
+	}
+	
 		
 	public String getId() {
 		return id;

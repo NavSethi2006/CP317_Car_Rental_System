@@ -13,9 +13,7 @@ public class RentalDAO {
 		List<Rental> rentals = new ArrayList<Rental>();
 		String query = "SELECT * FROM rentals WHERE vehicle_id = '"+vehicleID+"'";
 		ResultSet result = MySQL.fetch(query);
-		
 		try {
-			
 			while(result.next()) {
 				String id = result.getString("id");
 			    String vec_id = vehicleID;
@@ -26,19 +24,16 @@ public class RentalDAO {
 			    
 			    Rental rental = new Rental();
 			    rental.setRentalID(id);
-			    rental.setVehicle(VehicleDAO.findByID(vehicleID));
+			    rental.setVehicle(VehicleDAO.findByID(vec_id));
 			    rental.setCustomer(CustomerDAO.findByID(customer_id));
 			    rental.setPickupDate(start_date);
 			    rental.setPlannedReturnDate(end_date);
 			    rental.setTotalCost(total_cost);
 			    rentals.add(rental);
 			}
-		    
-		  
 		} catch(SQLException e) {
 			System.err.print("Rental doesent exist");
-		}
-			
+		}	
 		return rentals;
 	}
 	
@@ -48,7 +43,6 @@ public class RentalDAO {
 		ResultSet result = MySQL.fetch(query);
 		
 		try {
-			
 			while(result.next()) {
 				String id = result.getString("id");
 			    String vec_id = result.getString("vehicle_id");
