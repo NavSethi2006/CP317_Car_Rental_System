@@ -33,7 +33,7 @@ public class CustomerService {
 	}
 	
 	public void Register(String email, String rawPassword, String username) {
-		
+		customerDAO.insertRecord(username, email, rawPassword);
 	}
 	
 }
