@@ -1,9 +1,0 @@
-# Local Database Setup
-
-## Prerequisites
-- Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- Clone this repository
-
-## Start the database
-```bash
-docker-compose up -d
