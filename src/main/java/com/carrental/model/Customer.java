@@ -14,6 +14,9 @@ public class Customer {
 	
 	public enum CustomerType {REGULAR, CORPERATE, VIP};
 	
+	public Customer() {
+		
+	}
 	public Customer(String customerID, String customerName, String email, String password) {
 		this.customerID = customerID;
 		this.customerName = customerName;
@@ -33,4 +36,67 @@ public class Customer {
 	public String getPassword() {
 		return password;
 	}
+
+	public String getCustomerID() {
+		return customerID;
+	}
+
+	public void setCustomerID(String customerID) {
+		this.customerID = customerID;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getLicenseNumber() {
+		return licenseNumber;
+	}
+
+	public void setLicenseNumber(String licenseNumber) {
+		this.licenseNumber = licenseNumber;
+	}
+
+	public LocalDate getLicenseExpiry() {
+		return licenseExpiry;
+	}
+
+	public void setLicenseExpiry(LocalDate licenseExpiry) {
+		this.licenseExpiry = licenseExpiry;
+	}
+
+	public CustomerType getType() {
+		return type;
+	}
+
+	public void setType(CustomerType type) {
+		this.type = type;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	
+	
 }

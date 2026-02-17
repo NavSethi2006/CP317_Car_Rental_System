@@ -14,7 +14,8 @@ public class Rental {
 	private Payment payment;
 	
 	public enum RentalStatus {RESERVED, ACTIVE, COMPLETED, CANCELLED}
-
+	
+	
 	
 	public String getRentalID() {
 		return rentalID;

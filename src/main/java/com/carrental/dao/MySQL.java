@@ -26,16 +26,18 @@ public class MySQL {
 	private String password;
 	private static Connection connection;
 	
-	//
+	
 	public void Connect_to_MySQL_Database() {
-		URL = "jdbc:mysql://localhost:3306/car_rental?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-		username = "user";
+		URL = "jdbc:mysql://127.0.0.1:3306/Car_Rental_System?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+		username = "root";
 		password = "root";
 		try {
 			connection = DriverManager.getConnection(URL, username, password);
 		} catch (SQLException e) {
 			System.err.print("Database is offline. Please try again later");
 		}
+		
+		System.out.println("Success connecting to the DATABASE");
 	}
 	
 	/**
@@ -68,7 +70,29 @@ public class MySQL {
 			success = rowsaffected > 0;
 		} catch (SQLException e) {
 			System.err.print("Failed to create insert statement");
+			e.printStackTrace();
 		}
 		return success;
 	}
+	
+	public static boolean update(String updateStmt) {
+		boolean success = false;
+		try {
+			Statement statement = connection.createStatement();
+			int rowsaffected = statement.executeUpdate(updateStmt);
+			success = rowsaffected > 0;
+		} catch(SQLException e) {
+			System.err.print("Failed to update table");
+		}
+		return success;
+	}
+	
+	public static void closeConnection() {
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			System.err.print("Could not teardown connection with the database server");
+		}
+	}
+	
 }

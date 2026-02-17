@@ -5,5 +5,5 @@
 - Clone this repository
 
 ## Start the database
-```bash
+bash
 docker-compose up -d

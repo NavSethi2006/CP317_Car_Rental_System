@@ -9,7 +9,7 @@ import main.java.com.carrental.model.Rental;
 
 public class RentalDAO {
 
-	public List<Rental> findByVehicleID(String vehicleID) {
+	public static List<Rental> findByVehicleID(String vehicleID) {
 		List<Rental> rentals = new ArrayList<Rental>();
 		String query = "SELECT * FROM rentals WHERE vehicle_id = '"+vehicleID+"'";
 		ResultSet result = MySQL.fetch(query);
@@ -37,7 +37,7 @@ public class RentalDAO {
 		return rentals;
 	}
 	
-	public List<Rental> findByCustomerID(String customerID) {
+	public static List<Rental> findByCustomerID(String customerID) {
 		List<Rental> rentals = new ArrayList<Rental>();
 		String query = "SELECT * FROM rentals WHERE customer_id = '"+customerID+"'";
 		ResultSet result = MySQL.fetch(query);
@@ -69,5 +69,44 @@ public class RentalDAO {
 	
 	}
 	
+	private Rental mapRowToRental(ResultSet rs) throws SQLException {
+        Rental rental = new Rental();
+        rental.setRentalID(rs.getString("id"));
+        rental.setVehicle(VehicleDAO.findByID(rs.getString("vehicle_id")));
+        rental.setCustomer(CustomerDAO.findByID("customer_id"));
+        rental.setPickupDate(rs.getObject("start_date", LocalDateTime.class));
+        rental.setPlannedReturnDate(rs.getObject("end_date", LocalDateTime.class));
+        rental.setStatus(Rental.RentalStatus.valueOf(rs.getString("status")));
+        // set other fields if needed
+        return rental;
+    }
+
+	public List<Rental> findOverlappingRentals(String id, LocalDateTime start, LocalDateTime end) {
+		List<Rental> overlapping = new ArrayList<>();
+		String query = "SELECT * FROM rentals " +
+		                "WHERE vehicle_id = ? " +
+		                "AND status IN ('ACTIVE', 'RESERVED') " +
+		                "AND start_date <= ? " +
+		                "AND end_date >= ?";
+		
+		ResultSet set = MySQL.fetch(query);
+		try {
+			while(set.next()) {
+				Rental rental = mapRowToRental(set);
+				overlapping.add(rental);
+			}	
+		} catch(SQLException e) {
+			
+		}
+		
+		return overlapping;
+	}
+		
+	public static void insertRecord(Rental rental) {
+		String query = "INSERT INTO customers(vehicle_id, customer_id, start_date, end_date, total_cost) "
+				+ "VALUES('"+rental.getRentalID()+"','"+rental.getCustomer().getCustomerID()+"','"+rental.getPickupDate()+
+				"','"+rental.getActualReturnDate()+"','"+rental.getTotalCost()+"');";
+		MySQL.insert(query);
+	}
 	
 }

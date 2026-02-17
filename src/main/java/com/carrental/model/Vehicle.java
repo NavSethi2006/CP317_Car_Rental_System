@@ -12,7 +12,7 @@ public class Vehicle {
 	private VehicleType type;
 
 	public enum VehicleType {SEDAN, SUV, TRUCK, CAR};
-	public enum VehicleStatus {AVAILABLE, RENTED, MAINTAINANCE};
+	public enum VehicleStatus {AVAILABLE, RENTED, MAINTENANCE};
 	
 	public Vehicle() {
 		

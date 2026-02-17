@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   mysql:
@@ -10,9 +9,8 @@ services:
       MYSQL_USER: user                       # Optional: create an app user
       MYSQL_PASSWORD: root           # Password for that user
     ports:
-      - "3307:3306"                          # Host:Container
+      - "3306:3306"                          # Host:Container
     volumes:
-      - mysql_data:/var/lib/mysql            # Persist data (optional)
       - ./db/init:/docker-entrypoint-initdb.d # Auto-run SQL scripts
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
