@@ -1,0 +1,307 @@
+# Car Rental System
+A **Java-based car rental management system** backed by a **MySQL database**, designed for team collaboration and easy local development using **Docker**.
+---
+## Project Structure
+
+```
+CarRentalSystem/
+├── src/
+│   └── main/java/com/carrental/
+│       ├── CarRentalApplication.java
+│       ├── dao/        # Data Access Objects (database interaction)
+│       ├── model/      # Domain classes (Vehicle, Customer, Rental, enums)
+│       ├── service/    # Business logic layer
+│       └── util/       # Utility classes (hashing, dates, etc.)
+│
+├── test/java/com/carrental/
+│         # Tests mirror production packages
+│
+├── db/init/
+│   └── create_tables.sql   # Auto-executed DB initialization scripts
+│
+├── lib/                # External JAR dependencies (manual management)
+├── docker-compose.yml  # MySQL container configuration
+└── README.md
+```
+
+---
+
+## Folder Responsibilities
+
+| Folder | Purpose |
+|------|---------|
+`src/main/java` | Production source code |
+`model` | Domain entities |
+`dao` | Database queries & persistence logic |
+`service` | Business logic and orchestration |
+`util` | Helper utilities |
+`test` | Unit & integration tests |
+`db/init` | SQL scripts auto-run on first DB startup |
+`lib` | Required dependency JAR files |
+`public` | Frontend source code
+`docker-compose.yml` | MySQL container setup |
+
+---
+
+## Prerequisites
+
+Make sure you have installed:
+
+- **Java JDK 11+**
+- **Docker Desktop** (or Docker Engine + Compose)
+- **Git** (optional)
+- A terminal or command prompt
+
+---
+
+## Quick Setup and Execution
+If you dont want to read anything then just follow these instructions, However make sure you have the prerequisites installed
+```bash
+git clone https://github.com/NavSethi2006/CP317_Car_Rental_System
+cd CP317_Car_Rental_System
+docker-compose up --build
+```
+This launches and builds both the mysql database and the java source code,
+be aware that this process may take some time so don't ctrl+c out of it.
+Once compilation is done and the mysql database is up and running there 
+should be a prompt saying:
+```bash
+car_rental_app  | Success connecting to the DATABASE
+car_rental_app  | Web server started on port http://localhost:8080
+```
+Open your browser and go to http://localhost:8080. You should be able to access the app from there for testing and demoing
+
+## 🚀 Setup & Execution more comprehensive
+
+### 1️. Clone Repository
+```bash
+git clone <repository-url>
+cd CarRentalSystem
+```
+
+---
+
+### 2️. Start MySQL Container and Java source
+```bash
+docker-compose up --build
+```
+
+This will:
+
+- Launch container **car_rental_db**
+- Create database **Car_Rental_System**
+- Execute SQL scripts in `db/init/`
+- Persist data in Docker volume `mysql_data`
+- Compile all of java backend and frontend
+- Direct you to http://localhost:8080 for you to test the app
+
+Check container status:
+```bash
+docker ps
+```
+
+---
+
+### 3️. Verify Database Schema
+```bash
+docker exec -it car_rental_db mysql -u root -p
+# password: root
+USE Car_Rental_System;
+SHOW TABLES;
+```
+
+Expected tables:
+```
+vehicles
+customers
+rentals
+```
+
+---
+
+### 4️. Compile Project
+This is only if you dont want to use docker for your execution, if requested i can make a shell and batch
+file for eaiser compilation
+
+Place all dependency JARs inside `lib/`, if JARs are already in lib/ then theres no worry, then run:
+
+**Mac/Linux**
+```bash
+javac -cp "lib/*:src/main/java" src/main/java/com/carrental/**/*.java
+```
+
+**Windows**
+```bash
+javac -cp "lib/*;src/main/java" src/main/java/com/carrental/**/*.java
+```
+
+---
+
+
+### 5️⃣ Run Application
+```bash
+java -cp "lib/*:src/main/java" com.carrental.MainApplication
+```
+
+---
+
+### 5.1 Run application with IDE
+This is IDE dependent so you probably have to look at that on the softwares website but heres a rundown
+ -  Right click on the project
+ -  Go to 'Configure Build Path'
+ -  Navigate to the library tab
+ -  Click on module path
+ -  Click on ADD JARs and navigate to the /lib folder
+ -  Add all those jars in /lib
+ -  Apply & close then run your application
+
+## 🧪 Running Tests
+
+Tests use **JUnit 5**.
+
+---
+
+### Option 1 — IDE
+1. Mark `test/java` as **Test Sources Root**
+2. Add all JARs from `lib/` to modulepath
+3. Right-click test → **Run**
+
+---
+
+### Option 2 — Console Launcher
+```bash
+java -jar lib/junit-platform-console-standalone-1.10.2.jar \
+     --class-path "src/main/java:test/java:lib/*" \
+     --scan-class-path
+```
+
+---
+
+### Option 3 — Custom Runner
+```bash
+java -cp "lib/*:src/main/java:test/java" com.carrental.Test
+```
+
+---
+
+## 📦 Dependencies
+
+Place these in `/lib`:
+
+| Library | Version | Purpose |
+|--------|---------|--------|
+MySQL Connector/J | 9.6.0 | JDBC driver |
+JUnit Console | 6.1.0 | Test runner |
+
+---
+
+## 🔧 Troubleshooting
+
+### Port 3306 Already In Use
+```
+Bind for 0.0.0.0:3306 failed
+```
+**Fix**
+- Stop local MySQL service  
+OR  
+- Change port in `docker-compose.yml` → `"3307:3306"`
+
+---
+
+### Container Not Starting
+Check logs:
+```bash
+docker logs car_rental_db
+```
+
+Common causes:
+- Port conflict
+- SQL syntax error
+
+Reset container:
+```bash
+docker-compose down -v
+docker-compose up --build
+```
+
+---
+
+### Column Errors
+Example:
+```
+Unknown column 'type'
+```
+
+Reset DB volume:
+```bash
+docker-compose down -v
+docker-compose up --build
+```
+
+---
+
+### ResultSet Errors
+```
+Before start of result set
+```
+
+Make sure DAO methods call:
+```java
+rs.next()
+```
+
+---
+
+### ClassNotFoundException
+Cause: Missing JAR.
+
+Fix: Ensure all dependencies are inside `/lib` and included in `-cp`.
+
+---
+
+### SQL Syntax Errors
+Print queries before execution:
+```java
+System.out.println(query);
+```
+
+Common mistakes:
+- Missing commas
+- Wrong column names
+- Unescaped quotes
+
+---
+
+### Connection Refused
+Verify:
+
+- Container running → `docker ps`
+- JDBC URL correct:
+```
+jdbc:mysql://127.0.0.1:3306/Car_Rental_System?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+```
+- Credentials:  
+`user = root`  
+`password = root`
+
+---
+
+## 👥 Contributing
+
+Guidelines:
+
+- Follow existing package structure
+- Write unit tests for new features
+- Update SQL scripts if schema changes
+- Notify team when DB reset is required
+- Never commit credentials unless they are used for tests
+- Keep README updated
+
+---
+
+## 📝 Notes
+
+- Current DB utility uses a **single static connection**
+- For production, use a connection pool such as **HikariCP**
+- Always use **PreparedStatement** in DAOs to prevent SQL injection
+- Tests assume the Docker database container is running
