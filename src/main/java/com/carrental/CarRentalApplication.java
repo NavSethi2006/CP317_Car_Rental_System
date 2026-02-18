@@ -1,7 +1,7 @@
 package main.java.com.carrental;
 
-import main.java.com.carrental.dao.CustomerDAO;
 import main.java.com.carrental.dao.MySQL;
+import main.java.com.carrental.gui.CarRentalServer;
 
 public class CarRentalApplication {
 
@@ -9,9 +9,7 @@ public class CarRentalApplication {
 		MySQL mysql = new MySQL();
 		mysql.Connect_to_MySQL_Database();
 		
-		// CUSTOMER DAO TEST
-		CustomerDAO customerDAO = new CustomerDAO();
-		
+		CarRentalServer server = new CarRentalServer();
 		
 		
 	}

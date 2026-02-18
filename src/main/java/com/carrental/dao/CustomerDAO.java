@@ -4,12 +4,19 @@ import java.sql.SQLException;
 
 import main.java.com.carrental.model.Customer;
 
+/**
+ * Get all customer info from this class, this
+ * should be the only class that sends and
+ * recieves data from the database
+ */
 public class CustomerDAO {
 	
-	public CustomerDAO() {
-		
-	}
-	
+	/**
+	 * Finds records of a customer based on the given username,
+	 * pretty flawed since multiple names could exist in the database
+	 * @param username
+	 * @return the customer that was found, null if no customer
+	 */
 	public static Customer findByUsername(String username) {
 		String query = "SELECT * FROM customers WHERE name = '"+username+"'";
 		ResultSet result = MySQL.fetch(query);
@@ -27,6 +34,11 @@ public class CustomerDAO {
 		return customer;
 	}
 	
+	/**
+	 * Finds records of a customer based on the given identification number
+	 * @param customer_id
+	 * @return the customer that was found, null if no customer
+	 */
 	public static Customer findByID (String customer_id) {
 		String query = "SELECT * FROM customers WHERE id = '"+customer_id+"'";
 		ResultSet result = MySQL.fetch(query);
@@ -46,6 +58,11 @@ public class CustomerDAO {
 		return customer;
 	}
 	
+	/**
+	 * Finds records of a customer based on the given email address
+	 * @param email
+	 * @return the customer that was found, null if no customer
+	 */
 	public static Customer findByEmail(String email) {
 		String query = "SELECT * FROM customers WHERE email = '"+email+"'";
 		ResultSet result = MySQL.fetch(query);
@@ -65,6 +82,13 @@ public class CustomerDAO {
 		return customer;
 	}
 	
+	/**
+	 * create a new customer record into the database, should be used in events
+	 * of registration
+	 * @param username
+	 * @param email
+	 * @param password
+	 */
 	public static void insertRecord(String username, String email, String password) {
 		String query = "INSERT INTO customers(name, email, password) VALUES('"+username+"','"+email+"','"+password+"');";
 		MySQL.insert(query);

@@ -1,6 +1,10 @@
 package main.java.com.carrental.model;
 
 
+
+/**
+ * Vehicle class model, mostly used to store information for use in another function
+ */
 public class Vehicle {
 	private String id;
 	private String licensePlate;
@@ -29,6 +33,11 @@ public class Vehicle {
 		status = VehicleStatus.AVAILABLE;
 	}
 	
+	/**
+	 * Get type of vehicle from the string, mostly used to parse the databases response of enum vehicle_type
+	 * @param String type
+	 * @return VehicleType the enum vehicle type
+	 */
 	public VehicleType getTypeFromString(String typeS) {
 		switch(typeS) {
 		case "SEDAN":

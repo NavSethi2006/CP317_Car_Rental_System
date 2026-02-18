@@ -2,6 +2,9 @@ package main.java.com.carrental.model;
 
 import java.time.LocalDateTime;
 
+/**
+ * Rental class model, mostly used to store information for use in another function
+ */
 public class Rental {
 	private String rentalID;
 	private Customer customer;

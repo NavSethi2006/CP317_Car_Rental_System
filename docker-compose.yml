@@ -13,6 +13,27 @@ services:
     volumes:
       - ./db/init:/docker-entrypoint-initdb.d # Auto-run SQL scripts
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 5
+  app:
+    build: .
+    container_name: car_rental_app
+    ports:
+      - "8080:8080"
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=Car_Rental_System
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      # Optional: mount public folder for live updates during development
+      - ./public:/public
 
 volumes:
   mysql_data:    # Named volume – keeps data when container restarts

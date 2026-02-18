@@ -9,13 +9,10 @@ import main.java.com.carrental.model.Rental;
 import main.java.com.carrental.model.Vehicle;
 import main.java.com.carrental.util.SecurePasswordHasher;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import java.sql.*;

@@ -7,8 +7,20 @@ import java.util.List;
 import java.time.LocalDateTime;
 import main.java.com.carrental.model.Rental;
 
+/**
+ * Get all Rental info from this class, this
+ * should be the only class that sends and
+ * recieves data from the database
+ */
 public class RentalDAO {
 
+	
+	/**
+	 * Finds a list of current rentals using a vehicles Identification number, 
+	 * however the id should be in string format
+	 * @param String vehicles identification
+	 * @return List of vehicles that have been founds through an id
+	 */
 	public static List<Rental> findByVehicleID(String vehicleID) {
 		List<Rental> rentals = new ArrayList<Rental>();
 		String query = "SELECT * FROM rentals WHERE vehicle_id = '"+vehicleID+"'";
@@ -37,6 +49,12 @@ public class RentalDAO {
 		return rentals;
 	}
 	
+	/**
+	 * Get a list of rentals by customer identification however the customer
+	 * identification should be in string format
+	 * @param String customerID
+	 * @return
+	 */
 	public static List<Rental> findByCustomerID(String customerID) {
 		List<Rental> rentals = new ArrayList<Rental>();
 		String query = "SELECT * FROM rentals WHERE customer_id = '"+customerID+"'";
@@ -69,6 +87,12 @@ public class RentalDAO {
 	
 	}
 	
+	/**
+	 * Helper function to map the row that was obtained by MySQL to a Rental object
+	 * @param rs
+	 * @return
+	 * @throws SQLException
+	 */
 	private Rental mapRowToRental(ResultSet rs) throws SQLException {
         Rental rental = new Rental();
         rental.setRentalID(rs.getString("id"));
@@ -77,30 +101,37 @@ public class RentalDAO {
         rental.setPickupDate(rs.getObject("start_date", LocalDateTime.class));
         rental.setPlannedReturnDate(rs.getObject("end_date", LocalDateTime.class));
         rental.setStatus(Rental.RentalStatus.valueOf(rs.getString("status")));
-        // set other fields if needed
         return rental;
     }
 
+	/**
+	 * Finds overlapping rentals using the vehicle identification, start and end date of the rental
+	 * @param String vehicle id
+	 * @param LocalDateTime start date
+	 * @param LocalDateTime end date
+	 * @return A list of overlapping rentals
+	 */
 	public List<Rental> findOverlappingRentals(String id, LocalDateTime start, LocalDateTime end) {
 		List<Rental> overlapping = new ArrayList<>();
 		String query = "SELECT * FROM rentals " +
 		                "WHERE vehicle_id = '"+id+"'" +
 		                "AND start_date <= '"+start+"' " +
 		                "AND end_date >= '"+end+"'";
-		
 		ResultSet set = MySQL.fetch(query);
 		try {
 			while(set.next()) {
 				Rental rental = mapRowToRental(set);
 				overlapping.add(rental);
 			}	
-		} catch(SQLException e) {
-			
+		} catch(SQLException e) {	
 		}
-		
 		return overlapping;
 	}
 		
+	/**
+	 * insert a record of a rental into the MySQL database
+	 * @param rental to insert into the database
+	 */
 	public static void insertRecord(Rental rental) {
 		String query = "INSERT INTO rentals(start_date, end_date, total_cost) "
 				+ "VALUES('"+rental.getPickupDate()+"','"+rental.getPlannedReturnDate()+"','"

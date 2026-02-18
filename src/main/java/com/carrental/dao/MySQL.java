@@ -27,10 +27,22 @@ public class MySQL {
 	private static Connection connection;
 	
 	
+	/**
+	 * Call this function to connect to the mysql database, should only be ran once
+	 */
 	public void Connect_to_MySQL_Database() {
-		URL = "jdbc:mysql://127.0.0.1:3306/Car_Rental_System?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-		username = "root";
-		password = "root";
+		
+		String dbHost = System.getenv().getOrDefault("MYSQL_HOST", "localhost");
+		String dbPort = System.getenv().getOrDefault("MYSQL_PORT", "3306");
+		String dbName = System.getenv().getOrDefault("MYSQL_DATABASE", "Car_Rental_System");
+		String dbUser = System.getenv().getOrDefault("MYSQL_USER", "root");
+		String dbPass = System.getenv().getOrDefault("MYSQL_PASSWORD", "root");
+		
+		
+	    URL = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName +
+	            "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+	      username = dbUser;
+	      password = dbPass;
 		try {
 			connection = DriverManager.getConnection(URL, username, password);
 		} catch (SQLException e) {
@@ -76,6 +88,12 @@ public class MySQL {
 		return success;
 	}
 	
+	/**
+	 * 
+	 * Update function to update a record and or table for the MySQL server
+	 * @param the MySQL statement
+	 * @return boolean if statement successfully executed
+	 */
 	public static boolean update(String updateStmt) {
 		boolean success = false;
 		try {
@@ -88,6 +106,9 @@ public class MySQL {
 		return success;
 	}
 	
+	/**
+	 * Function to close the database connection cleanly
+	 */
 	public static void closeConnection() {
 		try {
 			connection.close();

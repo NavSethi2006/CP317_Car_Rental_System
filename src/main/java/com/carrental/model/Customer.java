@@ -2,6 +2,9 @@ package main.java.com.carrental.model;
 
 import java.time.LocalDate;
 
+/**
+ * Customer class model, mostly used to store information for use in another function
+ */
 public class Customer {
 	private String customerID;
 	private String customerName;

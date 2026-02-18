@@ -4,30 +4,60 @@ import main.java.com.carrental.dao.CustomerDAO;
 import main.java.com.carrental.model.Customer;
 import main.java.com.carrental.util.SecurePasswordHasher;
 
+/**
+ * All buisness related processes that deals with the customer
+ * such as login and registration
+ */
 public class CustomerService {
 	
-	public CustomerService(CustomerDAO customerDAO) {
-
-	}
 	
-	
+	/**
+	 * function to login, as it is named. Pulls information from the database
+	 * in order to verify
+	 * @param email
+	 * @param raw password unhashed
+	 * @return customer null if customer not found
+	 */
 	public Customer Login(String email,String rawPassword) {
-		
 		Customer customer = CustomerDAO.findByEmail(email);
 		if(customer == null) {
 			return null;
 		}
 		boolean login = SecurePasswordHasher.verifyPassword(rawPassword, customer.getPassword());
 		if(!login) { 
-			// this case the gui would throw an error saying incorrect password
-			System.err.print("Password is incorrect");
+			customer = null;
 		}
 		return customer;
 	}
 	
-	public void Register(String email, String rawPassword, String username) {
+	
+	/**
+	 * 
+	 * Function to register, will insert a new record into the database
+	 * @param email
+	 * @param rawPassword
+	 * @param username
+	 * @return Customer 
+	 */
+	public Customer Register(String email, String rawPassword, String username) {
 		String hashedpassword = SecurePasswordHasher.hashPassword(rawPassword);
 		CustomerDAO.insertRecord(username, email, hashedpassword);
+		Customer customer = new Customer();
+		customer.setEmail(email);
+		customer.setCustomerName(username);
+		customer.setPassword(hashedpassword);
+		return customer;
+	}
+
+	/**
+	 * 
+	 * Function to register, will insert a new record into the database
+	 * @param customer
+	 * @return Customer
+	 */
+	public Customer Register(Customer customer) {
+		CustomerDAO.insertRecord(customer.getCustomerName(), customer.getEmail(), customer.getPassword());
+		return customer;
 	}
 	
 }

@@ -8,12 +8,21 @@ import main.java.com.carrental.model.Vehicle;
 import main.java.com.carrental.model.Vehicle.VehicleStatus;
 import main.java.com.carrental.model.Vehicle.VehicleType;
 
+/**
+ * Get all Vehicle info from this class, this
+ * should be the only class that sends and
+ * recieves data from the database
+ */
 public class VehicleDAO {
 
 	public VehicleDAO() {
 		
 	}
 	
+	/**
+	 * Find every vehicle available for rent
+	 * @return a list of vehicles that are available
+	 */
 	public List<Vehicle> findAvailableVehicles() {
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
 		String query = "SELECT * from vehicles where status='AVAILABLE'";
@@ -37,6 +46,10 @@ public class VehicleDAO {
 		return vehicles;
 	}
 	
+	/**
+	 * Find every vehicle that exists in the database
+	 * @return List of every vehicle in the database
+	 */
 	public List<Vehicle> findAllVehicles() {
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
 		String query = "SELECT * from vehicles";
@@ -60,6 +73,11 @@ public class VehicleDAO {
 		return vehicles;
 	}
 	
+	/**
+	 * Find every vehicle with given type
+	 * @param VehicleType type of vehicle to display
+	 * @return a list of vehicles that align with specified type
+	 */
 	public List<Vehicle> findByType(VehicleType type) {
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
 		String query = "SELECT * from vehicles where vehicle_type='"+type.toString()+"'";
@@ -83,6 +101,11 @@ public class VehicleDAO {
 		return vehicles;
 	}
 	
+	/**
+	 * Find a vehicle with given identification
+	 * @param ID
+	 * @return Vehicle vehicle found null if vehicle wasnt found
+	 */
 	public static Vehicle findByID(String ID) {
 		Vehicle vehicle = new Vehicle();
 		String query = "SELECT * FROM vehicles where id='"+ID+"'";
@@ -100,16 +123,26 @@ public class VehicleDAO {
 			vehicle.getTypeFromString(type);
 			
 		} catch(SQLException e) {
-			System.err.print("Could not find SQL column");
+			System.out.println("Could not find SQL column");
 		}
 		return vehicle;
 	}
 
-	public boolean updateStatus(String id, VehicleStatus maintenance) {
-		String query = "UPDATE vehicles SET status='"+maintenance.toString()+"' where id='"+id+"'";
+	/**
+	 * Update the static of the vehicle, for example, "AVAILABLE" "RENTED" "MAINTENANCE"
+	 * @param Vehicle identification
+	 * @param Status the status you want the car to change to
+	 * @return boolean true if MySQL query was successful
+	 */
+	public boolean updateStatus(String id, VehicleStatus status) {
+		String query = "UPDATE vehicles SET status='"+status.toString()+"' where id='"+id+"'";
 		return MySQL.update(query);
 	}
 	
+	/**
+	 * Insert a record of a vehicle into the MySQL database
+	 * @param Vehicle to insert into the database
+	 */
 	public static void insertRecord(Vehicle vec) {
 		String query = "INSERT INTO vehicles (license_plate, make, model, year, daily_rate, vehicle_type, status) "
 	             + "VALUES ('" + vec.getLicensePlate() + "','" + vec.getMake() + "','" + vec.getModel() + "',"
