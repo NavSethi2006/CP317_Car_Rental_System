@@ -46,8 +46,8 @@ public class DAOTest {
     
     private void insertVehicle(String plate, String make, String model, int year, double rate, String type, String status) {
         String sql = String.format(
-            "INSERT INTO vehicles (license_plate, make, model, year, daily_rate, type, status) VALUES ('%s', '%s', '%s', %d, %.2f, '%s', '%s')",
-            plate, make, model, year, rate, type.toString(), status.toString()
+            "INSERT INTO vehicles (license_plate, make, model, year, daily_rate, vehicle_type, status) VALUES ('%s', '%s', '%s', %d, %.2f, '%s', '%s')",
+            plate, make, model, year, rate, type, status
         );
         assertTrue(MySQL.insert(sql), "Failed to insert vehicle: " + plate);
     }
@@ -84,7 +84,10 @@ public class DAOTest {
     private int getCustomerIdByEmail(String email) {
         String sql = "SELECT id FROM customers WHERE email = '" + email + "'";
         try (ResultSet rs = MySQL.fetch(sql)) {
-            if (rs.next()) return rs.getInt("id");
+            if (rs.next())  {
+            	int id = rs.getInt("id");
+            	return id;
+            }
         } catch (SQLException e) {
             fail("Could not retrieve customer ID for email: " + email, e);
         }
@@ -112,21 +115,19 @@ public class DAOTest {
 
     @Test
     void testFindAvailableVehicles() {
-        insertVehicle("OP3-we2", "Toyota", "Camry", 2022, 45.00, "SEDAN", "AVAILABLE");
-        insertVehicle("OP3-321", "Honda", "Civic", 2023, 50.00, "SEDAN", "AVAILABLE");
+        insertVehicle("ABC-123", "Toyota", "Camry", 2022, 45.00, "SEDAN", "RENTED");
+        insertVehicle("XYZ-789", "Honda", "Civic", 2023, 50.00, "SEDAN", "AVAILABLE");
         insertCustomer("alice@example.com", "Alice", "555-1234", "LIC123");
-        insertRental("OP3-321", "alice@example.com",
+        insertRental("ABC-123", "alice@example.com",
                 LocalDateTime.of(2025, 3, 1, 10, 0),
                 LocalDateTime.of(2025, 3, 5, 10, 0),
                 200.00);
-
         VehicleDAO vehicleDAO = new VehicleDAO();
-
         List<Vehicle> available = vehicleDAO.findAvailableVehicles();
 
         // Only ABC-123 should be available (XYZ-789 is rented during that period)
         assertEquals(1, available.size());
-        assertEquals("ABC-123", available.get(0).getLicensePlate());
+        assertEquals("XYZ-789", available.get(0).getLicensePlate());
     }
 
     @Test
@@ -201,9 +202,9 @@ public class DAOTest {
 
     @Test
     void testFindOverlappingRentals() {
-        insertVehicle("XYZ-798", "Honda", "Civic", 2023, 50.00, "SEDAN", "AVAILABLE");
+        insertVehicle("XYZ-789", "Honda", "Civic", 2023, 50.00, "SEDAN", "AVAILABLE");
         insertCustomer("alice@example.com", "Alice", "555-1234", "LIC123");
-        insertRental("XYZ-798", "alice@example.com",
+        insertRental("XYZ-789", "alice@example.com",
                 LocalDateTime.of(2025, 3, 1, 10, 0),
                 LocalDateTime.of(2025, 3, 5, 10, 0),
                 200.00);
@@ -219,7 +220,7 @@ public class DAOTest {
 
     @Test
     void testFindOverlappingRentalsNoOverlap() {
-        insertVehicle("OPS-312", "Honda", "Civic", 2023, 50.00, "SEDAN", "AVAILABLE");
+        insertVehicle("XYZ-789", "Honda", "Civic", 2023, 50.00, "SEDAN", "AVAILABLE");
         insertCustomer("alice@example.com", "Alice", "555-1234", "LIC123");
         insertRental("XYZ-789", "alice@example.com",
                 LocalDateTime.of(2025, 3, 1, 10, 0),
@@ -242,7 +243,6 @@ public class DAOTest {
         int vehicleId = getVehicleIdByPlate("ABC-123");
         int customerId = getCustomerIdByEmail("alice@example.com");
 
-        RentalDAO rentalDAO = new RentalDAO();
         Rental rental = new Rental();
         rental.setVehicle(VehicleDAO.findByID(Integer.toString(vehicleId)));
         rental.setCustomer(CustomerDAO.findByID(Integer.toString(customerId)));

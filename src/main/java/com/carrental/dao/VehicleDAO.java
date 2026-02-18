@@ -16,22 +16,20 @@ public class VehicleDAO {
 	
 	public List<Vehicle> findAvailableVehicles() {
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
-		String query = "SELECT * from vehicles";
+		String query = "SELECT * from vehicles where status='AVAILABLE'";
 		ResultSet set = MySQL.fetch(query);
 		try {
 			Vehicle vehicle = new Vehicle();
-			while(set.next()) {
-				if(set.getString("status") == "AVAILABLE") {
+			while(set.next()) {			
 					vehicle.setId(set.getString("id"));
 					vehicle.setLicensePlate(set.getString("license_plate"));
 					vehicle.setMake(set.getString("make"));
 					vehicle.setModel(set.getString("model"));
 					vehicle.setYear(set.getInt("year"));
 					vehicle.setDailyRate(set.getDouble("daily_rate"));
-					String type = set.getString("type");
+					String type = set.getString("vehicle_type");
 					vehicle.getTypeFromString(type);
 					vehicles.add(vehicle);
-				}
 			}
 		} catch(SQLException e) {
 			System.err.print("Could not find SQL column");
@@ -52,7 +50,7 @@ public class VehicleDAO {
 				vehicle.setModel(set.getString("model"));
 				vehicle.setYear(set.getInt("year"));
 				vehicle.setDailyRate(set.getDouble("daily_rate"));
-				String type = set.getString("type");
+				String type = set.getString("vehicle_type");
 				vehicle.getTypeFromString(type);
 				vehicles.add(vehicle);
 			}
@@ -64,7 +62,7 @@ public class VehicleDAO {
 	
 	public List<Vehicle> findByType(VehicleType type) {
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
-		String query = "SELECT * from vehicles where type='"+type.toString()+"'";
+		String query = "SELECT * from vehicles where vehicle_type='"+type.toString()+"'";
 		ResultSet set = MySQL.fetch(query);
 		try {
 			Vehicle vehicle = new Vehicle();
@@ -98,7 +96,7 @@ public class VehicleDAO {
 			vehicle.setModel(set.getString("model"));
 			vehicle.setYear(set.getInt("year"));
 			vehicle.setDailyRate(set.getDouble("daily_rate"));
-			String type = set.getString("type");
+			String type = set.getString("vehicle_type");
 			vehicle.getTypeFromString(type);
 			
 		} catch(SQLException e) {
@@ -113,7 +111,7 @@ public class VehicleDAO {
 	}
 	
 	public static void insertRecord(Vehicle vec) {
-		String query = "INSERT INTO vehicles (license_plate, make, model, year, daily_rate, type, status) "
+		String query = "INSERT INTO vehicles (license_plate, make, model, year, daily_rate, vehicle_type, status) "
 	             + "VALUES ('" + vec.getLicensePlate() + "','" + vec.getMake() + "','" + vec.getModel() + "',"
 	             + vec.getYear() + "," + vec.getDailyRate() + ",'"
 	             + vec.getType().toString() + "','" + vec.getStatus().toString() + "')";

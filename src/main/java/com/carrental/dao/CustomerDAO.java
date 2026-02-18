@@ -33,15 +33,15 @@ public class CustomerDAO {
 		Customer customer = null;
 		try {
 			result.next();
-			String id = result.getString(0);
-			String name = result.getString(1);
-			String email = result.getString(2);
-			String password = result.getString(3);
+			String id = result.getString("id");
+			String name = result.getString("name");
+			String email = result.getString("email");
+			String password = result.getString("password");
 			
 			customer = new Customer(id, name, email, password);
 
 		} catch(SQLException e) {
-			System.err.print("This email doesent exist in our database, would you like to register?");
+			System.err.print("This Customer identification does not exist?");
 		}
 		return customer;
 	}

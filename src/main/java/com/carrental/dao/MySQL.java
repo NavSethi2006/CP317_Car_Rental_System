@@ -52,6 +52,7 @@ public class MySQL {
 			Statement statement = connection.createStatement();
 			result = statement.executeQuery(selectStmt);
 		} catch(SQLException e) {
+			e.printStackTrace();
 			System.err.print("Failed to fetch data from database, Please try again later");
 		}
 		

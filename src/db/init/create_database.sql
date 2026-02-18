@@ -8,7 +8,7 @@ CREATE TABLE vehicles (
 	model VARCHAR(255),
 	year INT,
 	daily_rate DECIMAL(10,2),
-	type enum('SEDAN', 'SUV', 'TRUCK', 'CAR'),
+	vehicle_type enum('SEDAN', 'SUV', 'TRUCK', 'CAR'),
 	status enum('AVAILABLE', 'RENTED', 'MAINTENANCE') DEFAULT 'AVAILABLE'
 );
 

@@ -84,10 +84,9 @@ public class RentalDAO {
 	public List<Rental> findOverlappingRentals(String id, LocalDateTime start, LocalDateTime end) {
 		List<Rental> overlapping = new ArrayList<>();
 		String query = "SELECT * FROM rentals " +
-		                "WHERE vehicle_id = ? " +
-		                "AND status IN ('ACTIVE', 'RESERVED') " +
-		                "AND start_date <= ? " +
-		                "AND end_date >= ?";
+		                "WHERE vehicle_id = '"+id+"'" +
+		                "AND start_date <= '"+start+"' " +
+		                "AND end_date >= '"+end+"'";
 		
 		ResultSet set = MySQL.fetch(query);
 		try {
@@ -103,9 +102,9 @@ public class RentalDAO {
 	}
 		
 	public static void insertRecord(Rental rental) {
-		String query = "INSERT INTO customers(vehicle_id, customer_id, start_date, end_date, total_cost) "
-				+ "VALUES('"+rental.getRentalID()+"','"+rental.getCustomer().getCustomerID()+"','"+rental.getPickupDate()+
-				"','"+rental.getActualReturnDate()+"','"+rental.getTotalCost()+"');";
+		String query = "INSERT INTO rentals(start_date, end_date, total_cost) "
+				+ "VALUES('"+rental.getPickupDate()+"','"+rental.getPlannedReturnDate()+"','"
+				+rental.getTotalCost()+"');";
 		MySQL.insert(query);
 	}
 	
