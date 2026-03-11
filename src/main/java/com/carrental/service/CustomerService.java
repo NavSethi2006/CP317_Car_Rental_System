@@ -20,12 +20,15 @@ public class CustomerService {
 	 */
 	public Customer Login(String email,String rawPassword) {
 		Customer customer = CustomerDAO.findByEmail(email);
+		
 		if(customer == null) {
+			System.out.println("Could not find email in database");
 			return null;
 		}
 		boolean login = SecurePasswordHasher.verifyPassword(rawPassword, customer.getPassword());
 		if(!login) { 
 			customer = null;
+			System.err.println("Password incorrect, try again!");
 		}
 		return customer;
 	}
@@ -55,9 +58,8 @@ public class CustomerService {
 	 * @param customer
 	 * @return Customer
 	 */
-	public Customer Register(Customer customer) {
+	public void Register(Customer customer) {
 		CustomerDAO.insertRecord(customer.getCustomerName(), customer.getEmail(), customer.getPassword());
-		return customer;
 	}
 	
 }

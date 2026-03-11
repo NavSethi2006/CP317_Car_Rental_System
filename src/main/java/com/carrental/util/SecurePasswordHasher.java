@@ -1,5 +1,6 @@
 package main.java.com.carrental.util;
 
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -79,11 +80,13 @@ public class SecurePasswordHasher {
 
 		} catch (NoSuchAlgorithmException e) {
 			System.err.print("No algorithm available for password");
+			e.printStackTrace();
 		} catch (InvalidKeySpecException e) {
 			System.err.print("Invalid key SPEC");
+			e.printStackTrace();
 		}
  
-        return Arrays.equals(computedHash, storedHash);
+        return MessageDigest.isEqual(computedHash, storedHash);
     }
 
 	

@@ -49,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             try {
                 const user = await login(credentials);
-                alert('Welcome ' + user.name);
                 window.location.href = '/dashboard.html';
             } catch (err) {
                 alert('Login failed: ' + err.message);

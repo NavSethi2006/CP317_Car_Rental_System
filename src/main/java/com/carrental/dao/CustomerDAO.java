@@ -67,14 +67,17 @@ public class CustomerDAO {
 		String query = "SELECT * FROM customers WHERE email = '"+email+"'";
 		ResultSet result = MySQL.fetch(query);
 		Customer customer = null;
+		
 		try {
-			result.next();
-			String id = result.getString("id");
-			String name = result.getString("name");
-			// skipped 2 since index 2 is email
-			String password = result.getString("password");
-			
-			customer = new Customer(id, name, email, password);
+			if(result.next()) {
+				String id = result.getString("id");
+				String name = result.getString("name");
+				String password = result.getString("password");
+				
+				customer = new Customer(id, name, email, password);
+			} else {
+				System.err.print("This email doesent exist in our database, would you like to register?");
+			}
 		} catch(SQLException e) {
 			e.printStackTrace();
 			System.err.print("This email doesent exist in our database, would you like to register?");
