@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Car Rental - Search Rentals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #FFA500;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .welcome {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 26px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .welcome span {
+            color: #7B3A00;
+        }
+
+        .filterBox {
+            background-color: #B35A00;
+            border-radius: 20px;
+            padding: 30px 40px;
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .filterBox h2 {
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .filter-group label {
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 8px;
+            border: none;
+            background-color: #f9f9f7;
+            font-size: 15px;
+            color: #333;
+            cursor: pointer;
+            outline: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+        }
+
+        select:focus {
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.4);
+        }
+
+        .apply-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1.5px solid #333;
+            background-color: #f0f0ee;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .apply-btn:hover {
+            background-color: #ddd;
+        }
+
+        
+        .listings-placeholder {
+            margin-top: 10px;
+            background-color: rgba(0,0,0,0.1);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            color: white;
+            font-size: 15px;
+            font-style: italic;
+        }
+
+        
+        .bottom-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .cancel-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1.5px solid white;
+            background-color: transparent;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .cancel-btn:hover {
+            background-color: rgba(255,255,255,0.15);
+        }
+
+        .payment-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1.5px solid #333;
+            background-color: #f0f0ee;
+            color: #333;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .payment-btn:hover {
+            background-color: #ddd;
+        }
+
+        /* Confirmation message */
+        .confirm-msg {
+            display: none;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            font-size: 15px;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="welcome">
+        Welcome, <span id="usernameDisplay">Username</span>
+    </div>
+
+    <div class="filterBox">
+        <h2>Filter Rentals</h2>
+
+        <div class="filter-group">
+            <label>Car Type</label>
+            <select id="carType">
+                <option value="">All Types</option>
+                <option value="sedan">Sedan</option>
+                <option value="suv">SUV</option>
+                <option value="truck">Truck</option>
+                <option value="van">Van</option>
+                <option value="convertible">Convertible</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Start Date</label>
+            <input type="date" id="startDate">
+        </div>
+
+        <div class="filter-group">
+            <label>End Date</label>
+            <input type="date" id="endDate">
+        </div>
+
+        <div class="filter-group">
+            <label>Price</label>
+            <select id="price">
+                <option value="">All Prices</option>
+                <option value="low-high">Lowest to Highest</option>
+                <option value="high-low">Highest to Lowest</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Seats</label>
+            <select id="seats">
+                <option value="">All Seats</option>
+                <option value="2">2</option>
+                <option value="5">5</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+            </select>
+        </div>
+
+
+        <div class="filter-group">
+            <label>Colour</label>
+            <select id="colour">
+                <option value="">All Colours</option>
+                <option value="white">White</option>
+                <option value="red">Red</option>
+                <option value="blue">Blue</option>
+                <option value="black">Black</option>
+            </select>
+        </div>
+
+        <button class="apply-btn" onclick="applyFilters()">Apply Filters</button>
+
+        
+        <div class="listings-placeholder">
+             Car listings will be a sprint 3 task
+        </div>
+
+        <p class="confirm-msg" id="confirmMsg">Booking cancelled. Returning to dashboard...</p>
+
+        
+        <div class="bottom-buttons">
+            <button class="cancel-btn" onclick="cancelBooking()">Cancel Booking</button>
+            <button class="payment-btn" onclick="goToPayment()">Move to Payment →</button>
+        </div>
+
+    </div>
+
+    <script>
+        const username = sessionStorage.getItem('username') || 'Guest';
+        document.getElementById('usernameDisplay').textContent = username;
+
+        function applyFilters() {
+            const filters = {
+                carType: document.getElementById('carType').value,
+                price:   document.getElementById('price').value,
+                seats:   document.getElementById('seats').value,
+                colour:  document.getElementById('colour').value,
+            };
+            console.log('Filters applied:', filters);
+            // sprint 3 task
+        }
+
+        function cancelBooking() {
+            const msg = document.getElementById('confirmMsg');
+            msg.style.display = 'block';
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 2000);
+        }
+
+        function goToPayment() {
+            // sprint 3 task
+            window.location.href = 'payment.html';
+        }
+    </script>
+
+</body>
+</html>
