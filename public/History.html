@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Car Rental - History</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #FFA500;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .history-box {
+            background-color: #B35A00;
+            border-radius: 20px;
+            padding: 30px 40px;
+            width: 100%;
+            max-width: 520px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .history-box h2 {
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        
+        .rental-card {
+            background-color: #f9f9f7;
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .rental-card .car-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .rental-card .detail {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .rental-card .status {
+            font-size: 13px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 4px;
+            width: fit-content;
+        }
+
+        .status.completed {
+            background-color: #90EE90;
+            color: #2d6a2d;
+        }
+
+        .status.cancelled {
+            background-color: #ffcccc;
+            color: #a00;
+        }
+
+        
+        .no-history {
+            text-align: center;
+            color: white;
+            font-style: italic;
+            font-size: 15px;
+        }
+
+        .back-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1.5px solid white;
+            background-color: transparent;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 6px;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(255,255,255,0.15);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="title">Rental History</div>
+
+    <div class="history-box">
+        <h2>Your Past Rentals</h2>
+
+        <div class="rental-card">
+            <div class="car-name"> Toyota Camry (2022)</div>
+            <div class="detail"> Start: Jan 10, 2026</div>
+            <div class="detail"> End: Jan 15, 2026</div>
+            <div class="detail"> Total: $250.00</div>
+            <span class="status completed">Completed</span>
+        </div>
+
+        <div class="rental-card">
+            <div class="car-name"> Ford Explorer (2023)</div>
+            <div class="detail"> Start: Feb 3, 2026</div>
+            <div class="detail"> End: Feb 7, 2026</div>
+            <div class="detail"> Total: $320.00</div>
+            <span class="status completed">Completed</span>
+        </div>
+
+        <div class="rental-card">
+            <div class="car-name"> Honda Civic (2021)</div>
+            <div class="detail"> Start: Mar 1, 2026</div>
+            <div class="detail"> End: Mar 3, 2026</div>
+            <div class="detail"> Total: $90.00</div>
+            <span class="status cancelled">Cancelled</span>
+        </div>
+
+        <button class="back-btn" onclick="window.location.href='dashboard.html'">← Back to Dashboard</button>
+    </div>
+
+    <script>
+        
+    </script>
+
+</body>
+</html>
+
