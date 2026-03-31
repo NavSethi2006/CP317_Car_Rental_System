@@ -203,8 +203,4 @@ public class RentalDAO {
 	    return rentals;
 	}
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 27f2521909b97ac9bd6ab7ace4835bfeb2b4765f

@@ -124,7 +124,7 @@ public class GUITest {
 		@Override
 		public void setStreams(InputStream i, OutputStream o) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
@@ -301,13 +301,14 @@ public class GUITest {
             assertTrue(response.contains("Missing email or password"));
         }
 
+
         @Test
         void testValidCredentials_LoginSuccess_Returns200() throws IOException {
             String body = "{\"email\":\"john.doe@example.com\",\"password\":\"123\"}";
             TestHttpExchange exchange = new TestHttpExchange("POST", "/login", body);
             handler.handle(exchange);
 
-            
+
             assertEquals(HTTPUtils.SUCCESSFUL_LOGIN, exchange.responseStatusCode);
             assertEquals("john.doe@example.com", testCustomerService.lastLoginEmail);
             assertEquals("123", testCustomerService.lastLoginPassword);
