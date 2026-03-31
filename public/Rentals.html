@@ -7,288 +7,86 @@
 <head>
     <meta charset="UTF-8">
     <title>Car Rental - Search Rentals</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: #FFA500;
-            font-family: Arial, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px;
-        }
-
-        .welcome {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 26px;
-            font-weight: bold;
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-        }
-
-        .welcome span {
-            color: #7B3A00;
-        }
-
-        .filterBox {
-            background-color: #B35A00;
-            border-radius: 20px;
-            padding: 30px 40px;
-            width: 100%;
-            max-width: 480px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .filterBox h2 {
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 6px;
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .filter-group label {
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        select {
-            width: 100%;
-            padding: 14px 16px;
-            border-radius: 8px;
-            border: none;
-            background-color: #f9f9f7;
-            font-size: 15px;
-            color: #333;
-            cursor: pointer;
-            outline: none;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
-        }
-
-        select:focus {
-            box-shadow: 0 0 0 2px rgba(255,255,255,0.4);
-        }
-
-        .apply-btn {
-            width: 100%;
-            padding: 14px;
-            border-radius: 8px;
-            border: 1.5px solid #333;
-            background-color: #f0f0ee;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 6px;
-            transition: background-color 0.2s;
-        }
-
-        .apply-btn:hover {
-            background-color: #ddd;
-        }
-
-        
-        .listings-placeholder {
-            margin-top: 10px;
-            background-color: rgba(0,0,0,0.1);
-            border-radius: 12px;
-            padding: 30px;
-            text-align: center;
-            color: white;
-            font-size: 15px;
-            font-style: italic;
-        }
-
-        
-        .bottom-buttons {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .cancel-btn {
-            flex: 1;
-            padding: 14px;
-            border-radius: 8px;
-            border: 1.5px solid white;
-            background-color: transparent;
-            color: white;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .cancel-btn:hover {
-            background-color: rgba(255,255,255,0.15);
-        }
-
-        .payment-btn {
-            flex: 1;
-            padding: 14px;
-            border-radius: 8px;
-            border: 1.5px solid #333;
-            background-color: #f0f0ee;
-            color: #333;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .payment-btn:hover {
-            background-color: #ddd;
-        }
-		
-		.rental-card {
-				background-color: #f9f9f7;
-			   border-radius: 12px;
-			   padding: 16px 20px;
-			   display: flex;
-			   flex-direction: column;
-			   gap: 6px;
-			   margin-bottom: 16px;            /* added spacing between cards */
-			   text-decoration: none;           /* remove underline from <a> */
-			   color: inherit;                  /* keep text color */
-			   transition: transform 0.1s, box-shadow 0.2s;
-			   cursor: pointer;
-		        }
-
-		        .rental-card .car-name {
-		            font-size: 16px;
-		            font-weight: bold;
-		            color: #333;
-		        }
-
-		        .rental-card .detail {
-		            font-size: 14px;
-		            color: #555;
-		        }
-
-		        .rental-card .status {
-		            font-size: 13px;
-		            font-weight: bold;
-		            padding: 4px 10px;
-		            border-radius: 20px;
-		            display: inline-block;
-		            margin-top: 4px;
-		            width: fit-content;
-		        }
-				.rental-card:hover {
-				    transform: translateY(-2px);
-				    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-				}
-
-        /* Confirmation message */
-        .confirm-msg {
-            display: none;
-            text-align: center;
-            color: white;
-            font-weight: bold;
-            font-size: 15px;
-            margin-top: 4px;
-        }
-    </style>
+    <link rel="stylesheet" href="css/rentals.css">
 </head>
 <body>
 
     <div class="welcome">
         Welcome, <span id="usernameDisplay">Username</span>
     </div>
+    <div id="filterAndCars">
+        <div class="filterBox">
+            <h2>Filter Rentals</h2>
 
-    <div class="filterBox">
-        <h2>Filter Rentals</h2>
+            <div class="filter-group">
+                <label>Car Type</label>
+                <select id="carType">
+                    <option value="">All Types</option>
+                    <option value="sedan">Sedan</option>
+                    <option value="suv">SUV</option>
+                    <option value="truck">Truck</option>
+                    <option value="van">Van</option>
+                    <option value="convertible">Convertible</option>
+                </select>
+            </div>
 
-        <div class="filter-group">
-            <label>Car Type</label>
-            <select id="carType">
-                <option value="">All Types</option>
-                <option value="sedan">Sedan</option>
-                <option value="suv">SUV</option>
-                <option value="truck">Truck</option>
-                <option value="van">Van</option>
-                <option value="convertible">Convertible</option>
-            </select>
+            <div class="filter-group">
+                <label>Start Date</label>
+                <input type="date" id="startDate">
+            </div>
+
+            <div class="filter-group">
+                <label>End Date</label>
+                <input type="date" id="endDate">
+            </div>
+
+            <div class="filter-group">
+                <label>Daily Rate Limit</label>
+                <input type="text" id="price">
+                    
+                </input>
+            </div>
+
+            <div class="filter-group">
+                <label>Year</label>
+                <select id="Year">
+                    <option value="">Year</option>
+                    <option value="2026">2026</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                </select>
+            </div>
+
+
+            <div class="filter-group">
+                <label>Colour</label>
+                <select id="colour">
+                    <option value="">All Colours</option>
+                    <option value="white">White</option>
+                    <option value="red">Red</option>
+                    <option value="blue">Blue</option>
+                    <option value="black">Black</option>
+                </select>
+            </div>
+
+
+            <button class="apply-btn" onclick="applyFilters()">Apply Filters</button>
+
+            
+
+
+            <p class="confirm-msg" id="confirmMsg">Booking cancelled. Returning to dashboard...</p>
+
+
         </div>
 
-        <div class="filter-group">
-            <label>Start Date</label>
-            <input type="date" id="startDate">
-        </div>
-
-        <div class="filter-group">
-            <label>End Date</label>
-            <input type="date" id="endDate">
-        </div>
-
-        <div class="filter-group">
-            <label>Daily Rate Limit</label>
-            <input type="text" id="price">
-                
-            </input>
-        </div>
-
-        <div class="filter-group">
-            <label>Year</label>
-            <select id="Year">
-                <option value="">Year</option>
-                <option value="2026">2026</option>
-                <option value="2025">2025</option>
-                <option value="2024">2024</option>
-                <option value="2023">2023</option>
-            </select>
-        </div>
-
-
-        <div class="filter-group">
-            <label>Colour</label>
-            <select id="colour">
-                <option value="">All Colours</option>
-                <option value="white">White</option>
-                <option value="red">Red</option>
-                <option value="blue">Blue</option>
-                <option value="black">Black</option>
-            </select>
-        </div>
-
-        <button class="apply-btn" onclick="applyFilters()">Apply Filters</button>
-
-        
-		<div class=".filterBox">
-			<div class=".filterBox">
-			    <div id="filtered-list"></div> <!-- dynamic cards will be inserted here -->
-			</div>
-
-		</div>
-
-        <p class="confirm-msg" id="confirmMsg">Booking cancelled. Returning to dashboard...</p>
-
-        
-        <div class="bottom-buttons">
-            <button class="cancel-btn" onclick="cancelBooking()">Cancel Booking</button>
-            <button class="payment-btn" onclick="goToPayment()">Move to Payment →</button>
+        <div id="results">
+            <table id="filtered-list"></table> <!-- dynamic cards will be inserted here -->
         </div>
 
     </div>
+    
 
     <script src="js/rentals.js"></script>
 
