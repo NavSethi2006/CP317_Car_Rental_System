@@ -1,52 +1,47 @@
 package main.java.com.carrental.util;
 
 import java.util.Properties;
-
 import javax.mail.*;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import javax.mail.internet.*;
 
-/*
- * Only used to send emails to clients, thats it
- */
 public class EmailUtil {
-	
-	final static String fromAddr = "noreply@carrental.com";
-	final static String smtpHost = "smtp.gmail.com";
-	
-	/**
-	 * sends an email to given recipient
-	 * @param recipient's Email
-	 * @param subject of email
-	 * @param body of email
-	 */
-	public static void sendEmail(String recipientEmail, String subject, String body) {
-		
-		Properties props = new Properties();
-		props.setProperty("mail.smtp.host", smtpHost);
-		
-		Session session = Session.getDefaultInstance(props);
-		
-		MimeMessage message = new MimeMessage(session);
-		try {
-			message.setFrom(new InternetAddress(fromAddr));
-			Address[] replyTo = {new InternetAddress(fromAddr)};
-			
-			message.setReplyTo(replyTo);
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
-			message.setSubject(subject);
-			message.setText(body);
-			
-			Transport.send(message);
-			
-		} catch (AddressException e) {
-			System.out.println("Email address is not found");
-		} catch (MessagingException e) {
-			System.out.println("Message could no send");
-		}
-		
-		System.out.println("Message sent...");
-		
-	}
+
+    private static final String FROM_EMAIL = "drivenownoreply@gmail.com";
+    private static final String FROM_PASSWORD = "hxoyyskercorrpnw"; // no spaces
+    private static final String SMTP_HOST = "smtp.gmail.com";
+    private static final int SMTP_PORT = 587;
+
+    /**
+     * Sends an email asynchronously so it doesn't block the main thread.
+     */
+    public static void sendEmail(String recipientEmail, String subject, String body) {
+        new Thread(() -> {
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", SMTP_HOST);
+            props.put("mail.smtp.port", SMTP_PORT);
+            props.put("mail.smtp.ssl.trust", SMTP_HOST);
+
+            Session session = Session.getInstance(props, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(FROM_EMAIL, FROM_PASSWORD);
+                }
+            });
+
+            try {
+                MimeMessage message = new MimeMessage(session);
+                message.setFrom(new InternetAddress(FROM_EMAIL));
+                message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
+                message.setSubject(subject);
+                message.setText(body);
+                Transport.send(message);
+                System.out.println("Email sent successfully to " + recipientEmail);
+            } catch (MessagingException e) {
+                System.err.println("Failed to send email to " + recipientEmail + ": " + e.getMessage());
+                // Do not throw – registration should not fail because of email issues
+            }
+        }).start();
+    }
 }

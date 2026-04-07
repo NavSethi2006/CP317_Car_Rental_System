@@ -7,6 +7,7 @@ import java.util.List;
 import java.time.LocalDate;
 import main.java.com.carrental.model.Rental;
 import main.java.com.carrental.model.Rental.RentalStatus;
+import main.java.com.carrental.util.EmailUtil;
 import main.java.com.carrental.util.ModelUtil;
 
 /**
@@ -181,6 +182,7 @@ public class RentalDAO {
 							rental.getTotalCost(),
 							ModelUtil.RentalStatusToString(rental.getStatus()));
 		
+
 		return inserted;
 	}
 

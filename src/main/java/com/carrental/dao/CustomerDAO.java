@@ -3,6 +3,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import main.java.com.carrental.model.Customer;
+import main.java.com.carrental.util.EmailUtil;
 
 /**
  * Get all customer info from this class, this
@@ -96,7 +97,6 @@ public class CustomerDAO {
 	public static void insertRecord(String username, String email, String password) {
 		String query = "INSERT INTO customers(name, email, password) VALUES(?,?,?);";
 		MySQL.insert(query,username,email,password);
-		
 	}
 	
 	/**

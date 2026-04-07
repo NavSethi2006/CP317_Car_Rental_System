@@ -5,6 +5,7 @@ WORKDIR /
 
 COPY lib/mysql-connector-j-9.6.0.jar /lib
 COPY lib/javax.mail.jar /lib
+COPY lib/activation.jar /lib
 COPY src/main/java /src
 COPY public /public
 

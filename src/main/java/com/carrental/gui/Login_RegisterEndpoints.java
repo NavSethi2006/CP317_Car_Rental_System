@@ -8,6 +8,7 @@ import com.sun.net.httpserver.HttpHandler;
 import main.java.com.carrental.model.Customer;
 import main.java.com.carrental.service.CustomerService;
 import main.java.com.carrental.service.PersistentData;
+import main.java.com.carrental.util.EmailUtil;
 import main.java.com.carrental.util.HTTPUtils;
 import main.java.com.carrental.util.JSONUtil;
 
@@ -36,6 +37,8 @@ public class Login_RegisterEndpoints {
 	            	customerService.Register(customer);
 	            	String jsonResponse = JSONUtil.customerToJson(customer);
 	                JSONUtil.sendResponse(exchange, HTTPUtils.SUCCESSFUL_REGISTRATION, jsonResponse);
+	        		EmailUtil.sendEmail(customer.getEmail(), "Registration Successful", "Your registration to DriveNow was successful");
+                
 	            } catch (Exception e) {
 	            	JSONUtil.sendResponse(exchange, HTTPUtils.INVALID_JSON, "{\"error\":\"" + JSONUtil.escapeJson(e.getMessage()) + "\"}");
 	            }
